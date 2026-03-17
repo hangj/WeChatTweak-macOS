@@ -34,7 +34,7 @@ struct Config: Decodable {
             case asm
         }
 
-        init(from decoder: any Decoder) throws {
+        init(from decoder: Decoder) throws {
             let container: KeyedDecodingContainer<CodingKeys> = try decoder.container(keyedBy: CodingKeys.self)
             self.arch = try container.decode(Arch.self, forKey: .arch)
             self.addr = try {
@@ -71,7 +71,7 @@ struct Config: Decodable {
             case entries
         }
 
-        init(from decoder: any Decoder) throws {
+        init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.identifier = try container.decode(String.self, forKey: .identifier)
             self.entries = try container.decode([Entry].self, forKey: .entries)
@@ -88,10 +88,23 @@ struct Config: Decodable {
                 from: Data(contentsOf: url)
             )
         } else {
-            return try JSONDecoder().decode(
-                [Config].self,
-                from: try await URLSession.shared.data(from: url).0
-            )
+            return try await withCheckedThrowingContinuation { continuation in
+                URLSession.shared.dataTask(with: url) { data, _, error in
+                    if let error = error {
+                        print("Error fetching config: \(error)")
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    guard let data = data else {
+                        print("No data received from URL: \(url)")
+                        continuation.resume(throwing: NSError(domain: "Config", code: 1, userInfo: [NSLocalizedDescriptionKey: "No data received from URL: \(url)"]))
+                        return
+                    }
+                    let configs = try! JSONDecoder().decode([Config].self, from: data)
+                    print("Successfully loaded config: \(configs)")
+                    continuation.resume(returning: configs)
+                }.resume()
+            }
         }
     }
 }
