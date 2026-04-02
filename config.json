@@ -424,6 +424,11 @@
             "arch": "arm64",
             "addr": "40e5a08",
             "asm": "00008052C0035FD6"
+          },
+          {
+            "arch": "x86_64",
+            "addr": "4B51260",
+            "asm": "B801000000C3"
           }
         ],
         "binary": "Contents/Frameworks/wechat.dylib"
@@ -501,25 +506,7 @@
             "arch": "arm64",
             "addr": "1b6dac",
             "asm": "20008052C0035FD6"
-          }
-        ],
-        "binary": "Contents/Frameworks/wechat.dylib"
-      },
-
-      {
-        "identifier": "revoke",
-        "entries": [
-          {
-            "arch": "x86_64",
-            "addr": "4B51260",
-            "asm": "B801000000C3"
-          }
-        ],
-        "binary": "Contents/Frameworks/wechat.dylib"
-      },
-      {
-        "identifier": "multiInstance",
-        "entries": [
+          },
           {
             "arch": "x86_64",
             "addr": "21f008",
