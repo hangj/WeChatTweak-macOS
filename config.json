@@ -1073,5 +1073,21 @@
         "binary": "Contents/Resources/wechat.dylib"
       }
     ]
+  },
+  {
+    "version": "269364",
+    "targets": [
+      {
+        "identifier": "multiInstance",
+        "entries": [
+          {
+            "arch": "x86_64",
+            "addr": "2FA0B8",
+            "asm": "909090909090"
+          }
+        ],
+        "binary": "Contents/Resources/wechat.dylib"
+      }
+    ]
   }
 ]
